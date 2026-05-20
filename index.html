@@ -1,0 +1,1283 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  BookOpen, Moon, Sun, ArrowUp, Calendar, Volume2, 
+  Sparkles, Star, Award, ChevronLeft, ChevronRight,
+  RotateCcw, Languages, Heart, HelpCircle
+} from 'lucide-react';
+
+// Standard style definitions for our responsive SVGs and animations
+const poemsData = [
+  {
+    id: "jing-ye-si",
+    title: "靜夜思",
+    author: "李白",
+    dynasty: "唐",
+    theme: "月夜與想家",
+    bgColor: "from-indigo-50 to-purple-100",
+    primaryColor: "indigo",
+    parentIntro: "這首詩描繪了秋天深夜，詩人看著月光想念家鄉的溫暖畫面。透過『霜』與『月』的對比，寫出了寂靜夜晚的思念。對三歲孩子來說，這能幫他們建立『晚上』、『月亮』和『想念爸爸媽媽』的溫感連結。",
+    sentences: [
+      {
+        text: "床前明月光",
+        pinyin: "chuáng qián míng yuè guāng",
+        jyutping: "cong4 cin4 ming4 jyut6 gwong1",
+        story: "哇，寶貝你看！晚上睡覺的時候，亮晶晶的月亮公公把光芒灑在床前，房間裡面都變得亮亮的、好溫柔呀。",
+        analysis: "『床前』點明空間，『明月光』帶來視覺亮點，鋪陳了安靜溫馨的夜景。",
+        svg: (
+          <svg viewBox="0 0 400 300" className="w-full h-full">
+            <rect width="400" height="300" fill="#1e1b4b" rx="20" />
+            <path d="M 0 300 Q 200 180 400 300 Z" fill="#312e81" />
+            {/* Window */}
+            <rect x="120" y="40" width="160" height="130" rx="10" fill="#111827" stroke="#4f46e5" strokeWidth="4" />
+            <line x1="200" y1="40" x2="200" y2="170" stroke="#4f46e5" strokeWidth="3" />
+            <line x1="120" y1="105" x2="280" y2="105" stroke="#4f46e5" strokeWidth="3" />
+            {/* Glowing Moon */}
+            <circle cx="200" cy="105" r="35" fill="#fef08a" filter="drop-shadow(0 0 15px rgba(254,240,138,0.8))" />
+            {/* Moonlight Beam */}
+            <polygon points="165,140 235,140 320,300 80,300" fill="url(#moonlight)" opacity="0.4" />
+            {/* Cute Bed */}
+            <rect x="240" y="200" width="130" height="70" rx="8" fill="#a78bfa" />
+            <rect x="250" y="190" width="40" height="20" rx="4" fill="#f5f3ff" />
+            <rect x="290" y="205" width="80" height="65" rx="4" fill="#8b5cf6" />
+            {/* Stars */}
+            <circle cx="50" cy="50" r="2" fill="#fff" />
+            <circle cx="80" cy="100" r="3" fill="#fef08a" />
+            <circle cx="340" cy="70" r="2.5" fill="#fff" />
+            <defs>
+              <linearGradient id="moonlight" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#fef08a" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#fef08a" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+          </svg>
+        ),
+        prompt: "A beautiful 3D Pixar style digital illustration for toddlers, a cozy warm children bedroom at night, a giant glowing friendly cartoon moon shining soft yellow light through an open window onto the floor, warm, magical, cute"
+      },
+      {
+        text: "疑是地上霜",
+        pinyin: "yí shì dì shàng shuāng",
+        jyutping: "ji4 si6 dei6 soeng6 soeng1",
+        story: "咦？地上怎麼白白亮亮的？好像冬天結了薄薄的冰、鋪了亮晶晶的雪霜一樣。原來是月亮光太調皮了，在跟我們玩遊戲呢！",
+        analysis: "『疑』字是神來之筆，將無形的月光比擬為有形的霜，寫出了詩人朦朧神智下的視覺錯覺。",
+        svg: (
+          <svg viewBox="0 0 400 300" className="w-full h-full">
+            <rect width="400" height="300" fill="#111827" rx="20" />
+            {/* Wooden Floor Lines */}
+            <line x1="0" y1="200" x2="400" y2="200" stroke="#374151" strokeWidth="3" />
+            <line x1="100" y1="200" x2="60" y2="300" stroke="#374151" strokeWidth="2" />
+            <line x1="200" y1="200" x2="200" y2="300" stroke="#374151" strokeWidth="2" />
+            <line x1="300" y1="200" x2="340" y2="300" stroke="#374151" strokeWidth="2" />
+            {/* Glowing frost on floor */}
+            <polygon points="80,300 320,300 240,200 160,200" fill="url(#frostGlow)" />
+            {/* Cute snowflakes/sparkles rising */}
+            <path d="M 180 230 L 185 235 L 180 240 L 175 235 Z" fill="#bae6fd" opacity="0.8" />
+            <path d="M 220 250 L 223 253 L 220 256 L 217 253 Z" fill="#bae6fd" opacity="0.8" />
+            <path d="M 140 260 L 145 265 L 140 270 L 135 265 Z" fill="#bae6fd" opacity="0.8" />
+            {/* Puzzled Kid's feet beside the bed */}
+            <rect x="260" y="160" width="80" height="60" rx="8" fill="#4b5563" />
+            <circle cx="280" cy="225" r="10" fill="#fbcfe8" />
+            <circle cx="300" cy="225" r="10" fill="#fbcfe8" />
+            <defs>
+              <linearGradient id="frostGlow" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#e0f2fe" stopOpacity="0.2" />
+                <stop offset="100%" stopColor="#bae6fd" stopOpacity="0.7" />
+              </linearGradient>
+            </defs>
+          </svg>
+        ),
+        prompt: "A cute 3D Pixar style digital illustration, looking at a wooden floor covered in a glowing magical silvery blue light reflecting like winter frost, tiny magical sparkles, cozy bedroom, whimsical"
+      },
+      {
+        text: "舉頭望明月",
+        pinyin: "jǔ tóu wàng míng yuè",
+        jyutping: "geoi2 tau4 mong6 ming4 jyut6",
+        story: "李白叔叔抬起小腦袋（寶寶我們一起抬頭～），看著天上那個又大又圓、像大盤子一樣的明月，月亮公公好像也在對他微笑呢！",
+        analysis: "『舉頭』是個充滿張力的動態。從地面的『霜』引導視線向上，看往夜空的圓月，心境也隨之高懸。",
+        svg: (
+          <svg viewBox="0 0 400 300" className="w-full h-full">
+            <rect width="400" height="300" fill="#0f172a" rx="20" />
+            {/* Stars */}
+            <g fill="#fff">
+              <circle cx="80" cy="60" r="1.5" />
+              <circle cx="320" cy="80" r="2" />
+              <circle cx="150" cy="40" r="1" />
+              <circle cx="250" cy="90" r="2.5" />
+            </g>
+            {/* Friendly smiling Moon */}
+            <circle cx="280" cy="80" r="45" fill="#fef08a" filter="drop-shadow(0 0 20px rgba(254,240,138,0.6))" />
+            {/* Moon Face */}
+            <circle cx="265" cy="75" r="3" fill="#ca8a04" />
+            <circle cx="285" cy="75" r="3" fill="#ca8a04" />
+            <path d="M 265 90 Q 275 98 285 90" stroke="#ca8a04" strokeWidth="3" fill="none" strokeLinecap="round" />
+            {/* Little Cute boy looking up */}
+            <g transform="translate(100, 160)">
+              {/* Body in ancient robe */}
+              <path d="M 20 120 C 10 70, 50 70, 40 120 Z" fill="#38bdf8" />
+              {/* Raised Neck and Head */}
+              <path d="M 25 70 Q 30 55 35 70" stroke="#fbcfe8" strokeWidth="8" fill="none" />
+              <circle cx="40" cy="45" r="25" fill="#fbcfe8" />
+              {/* Back Hair */}
+              <path d="M 15 45 Q 20 20 40 20 Q 55 30 55 50 Q 35 55 15 45 Z" fill="#1e293b" />
+              {/* Cute Bun */}
+              <circle cx="25" cy="20" r="8" fill="#1e293b" />
+              {/* Red Ribbon */}
+              <path d="M 20 22 Q 10 30 12 40" stroke="#ef4444" strokeWidth="3" fill="none" />
+              {/* Eye looking up */}
+              <ellipse cx="48" cy="40" rx="3" ry="5" fill="#1e293b" />
+              <path d="M 45 30 Q 50 32 53 35" stroke="#1e293b" strokeWidth="2" fill="none" />
+            </g>
+          </svg>
+        ),
+        prompt: "A 3D Pixar style digital art, a cute little boy in ancient Chinese light blue robes looking up into the dark starry sky at a large friendly smiling yellow cartoon moon, highly detailed, whimsical and sweet"
+      },
+      {
+        text: "低頭思故鄉",
+        pinyin: "dī tóu sī gù xiāng",
+        jyutping: "dai1 tau4 si1 gu3 hoeng1",
+        story: "看完月亮，叔叔輕輕地低下頭（跟著做低頭動作～）。他好想念他的爸爸媽媽、他的好朋友，還有他的溫馨小家。寶貝，我們給李白叔叔一個大大的擁抱好不好？",
+        analysis: "『低頭』與上句相應，落回內心深處。一個簡單的物理動作，完美傳達了思鄉的沉靜與內斂。",
+        svg: (
+          <svg viewBox="0 0 400 300" className="w-full h-full">
+            <rect width="400" height="300" fill="#0f172a" rx="20" />
+            {/* Thought bubble showing a cute warm cottage */}
+            <path d="M 220 50 C 180 50, 170 90, 200 110 C 180 140, 240 160, 270 130 C 310 130, 320 90, 290 70 C 310 40, 250 30, 220 50 Z" fill="#fef3c7" opacity="0.9" />
+            {/* Mini Cottage inside bubble */}
+            <polygon points="250,75 225,95 275,95" fill="#f59e0b" />
+            <rect x="230" y="95" width="40" height="25" fill="#d97706" />
+            <rect x="245" y="105" width="10" height="15" fill="#fef08a" />
+            {/* Thought bubble small dots */}
+            <circle cx="170" cy="140" r="8" fill="#fef3c7" opacity="0.8" />
+            <circle cx="140" cy="165" r="5" fill="#fef3c7" opacity="0.6" />
+            {/* Little Cute boy looking down */}
+            <g transform="translate(60, 150)">
+              {/* Body */}
+              <path d="M 20 120 C 10 70, 50 70, 40 120 Z" fill="#38bdf8" />
+              {/* Head tilted down */}
+              <circle cx="25" cy="65" r="25" fill="#fbcfe8" />
+              {/* Hair covering back and top */}
+              <path d="M 5 65 Q 10 40 30 40 Q 48 50 48 68 C 40 65 20 70 5 65 Z" fill="#1e293b" />
+              <circle cx="12" cy="40" r="8" fill="#1e293b" />
+              {/* Closed Eye */}
+              <path d="M 12 70 Q 18 75 22 72" stroke="#1e293b" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+            </g>
+          </svg>
+        ),
+        prompt: "A 3D Pixar style digital art, a cute little ancient Chinese boy bowing his head in gentle sadness, a glowing warm thought bubble floating above him showing a beautiful tiny cozy cottage in a sunny village, heartwarming, emotional"
+      }
+    ]
+  },
+  {
+    id: "chun-xiao",
+    title: "春曉",
+    author: "孟浩然",
+    dynasty: "唐",
+    theme: "春天的早晨",
+    bgColor: "from-emerald-50 to-teal-100",
+    primaryColor: "emerald",
+    parentIntro: "這是一首聽覺與聯想交織的春天交響曲。全詩不著一字『美』，卻處處洋溢著春天的生機與細膩。非常適合引導三歲幼兒感知自然界的聲音（鳥鳴、風雨）與變化。",
+    sentences: [
+      {
+        text: "春眠不覺曉",
+        pinyin: "chūn mián bù jué xiǎo",
+        jyutping: "ceon1 min4 bat1 gok3 hiu2",
+        story: "春天暖洋洋的，被窩太舒服啦！小寶寶睡得好香甜、呼嚕呼嚕地，連太陽公公偷偷爬上來、天已經亮了都不知道呢！",
+        analysis: "『春眠』寫出春日睡眠的沉醉與舒適，『不覺曉』流露出慵懶而滿足的生活情趣。",
+        svg: (
+          <svg viewBox="0 0 400 300" className="w-full h-full">
+            <rect width="400" height="300" fill="#f0fdf4" rx="20" />
+            {/* Sunrise rays from window */}
+            <polygon points="0,0 200,0 120,300 0,250" fill="#fef08a" opacity="0.3" />
+            {/* Window */}
+            <rect x="40" y="30" width="100" height="120" rx="5" fill="#bae6fd" stroke="#4ade80" strokeWidth="3" />
+            <line x1="90" y1="30" x2="90" y2="150" stroke="#4ade80" strokeWidth="2" />
+            {/* Little smiling Sun outside window */}
+            <circle cx="70" cy="60" r="15" fill="#f97316" />
+            {/* Green plants on sill */}
+            <path d="M 110 150 Q 120 130 130 150" stroke="#22c55e" strokeWidth="6" fill="none" strokeLinecap="round" />
+            <path d="M 125 150 Q 130 120 140 150" stroke="#22c55e" strokeWidth="4" fill="none" strokeLinecap="round" />
+            {/* Cozy Bed with sleeping baby */}
+            <rect x="180" y="160" width="180" height="100" rx="10" fill="#fca5a5" />
+            <rect x="195" y="145" width="50" height="30" rx="6" fill="#fff" />
+            {/* Quilt */}
+            <rect x="230" y="170" width="130" height="90" rx="6" fill="#86efac" />
+            {/* Sleeping face */}
+            <circle cx="220" cy="160" r="16" fill="#fbcfe8" />
+            <path d="M 215 160 Q 220 165 225 160" stroke="#1e293b" strokeWidth="2" fill="none" />
+            <path d="M 210 156 Q 212 154 214 156" stroke="#1e293b" strokeWidth="1.5" fill="none" />
+            <path d="M 222 156 Q 224 154 226 156" stroke="#1e293b" strokeWidth="1.5" fill="none" />
+            {/* Sleeping ZZZ */}
+            <text x="245" y="120" fontSize="14" fontWeight="bold" fill="#22c55e" fontFamily="sans-serif">z</text>
+            <text x="255" y="105" fontSize="18" fontWeight="bold" fill="#22c55e" fontFamily="sans-serif">Z</text>
+            <text x="270" y="85" fontSize="24" fontWeight="bold" fill="#22c55e" fontFamily="sans-serif">Z</text>
+          </svg>
+        ),
+        prompt: "A beautiful 3D Pixar style digital art, a cute happy baby sleeping cozy in a tiny bed under a light green blanket, soft morning sunlight shining through a bedroom window, cute green plants, peaceful"
+      },
+      {
+        text: "處處聞啼鳥",
+        pinyin: "chù chù wén tí niǎo",
+        jyutping: "cyu3 cyu3 man4 tai4 niu5",
+        story: "「唧唧、喳喳！」一睜開眼，窗外到處都是小鳥在唱歌。紅色的、黃色的、藍色的小鳥在樹枝上跳舞，牠們在跟寶寶說「早安」呢！",
+        analysis: "『處處』展現了空間的立體感與廣度，『聞啼鳥』以聲音襯托出春晨的熱烈、生機與和諧。",
+        svg: (
+          <svg viewBox="0 0 400 300" className="w-full h-full">
+            <rect width="400" height="300" fill="#ecfdf5" rx="20" />
+            {/* Tree Branch */}
+            <path d="M 0 180 Q 150 140, 400 210" stroke="#78350f" strokeWidth="10" fill="none" />
+            <path d="M 120 160 Q 200 100, 250 120" stroke="#78350f" strokeWidth="6" fill="none" />
+            {/* Leaves */}
+            <g fill="#4ade80">
+              <path d="M 50 160 Q 70 140 80 170 Z" />
+              <path d="M 180 120 Q 200 100 210 130 Z" />
+              <path d="M 300 170 Q 320 150 330 180 Z" />
+              <path d="M 100 185 Q 110 165 130 185 Z" />
+            </g>
+            {/* Blue Cute Bird */}
+            <g transform="translate(140, 100)">
+              <ellipse cx="25" cy="25" rx="20" ry="16" fill="#38bdf8" />
+              <circle cx="35" cy="18" r="10" fill="#38bdf8" />
+              <polygon points="45,15 52,18 45,21" fill="#f97316" />
+              <circle cx="37" cy="15" r="2" fill="#000" />
+              {/* Wing */}
+              <path d="M 15 25 Q 25 15, 25 35 Z" fill="#0284c7" />
+              <path d="M 5 25 Q -10 20 -5 30 Z" fill="#38bdf8" /> {/* Tail */}
+            </g>
+            {/* Yellow Cute Bird */}
+            <g transform="translate(250, 140)">
+              <ellipse cx="25" cy="25" rx="18" ry="15" fill="#fef08a" />
+              <circle cx="15" cy="18" r="9" fill="#fef08a" />
+              <polygon points="5,15 -2,18 5,21" fill="#f97316" />
+              <circle cx="13" cy="15" r="2" fill="#000" />
+              {/* Wing */}
+              <path d="M 20 25 Q 12 18, 15 33 Z" fill="#facc15" />
+            </g>
+            {/* Music Notes */}
+            <path d="M 195 70 Q 200 50, 215 55 M 215 55 L 215 75" stroke="#22c55e" strokeWidth="2" fill="none" />
+            <circle cx="195" cy="70" r="4" fill="#22c55e" />
+            <path d="M 110 80 Q 115 65, 125 70" stroke="#10b981" strokeWidth="2" fill="none" />
+            <circle cx="110" cy="80" r="3" fill="#10b981" />
+          </svg>
+        ),
+        prompt: "A 3D Pixar style digital art, close-up of three cute, round, colorful baby cartoon birds (one blue, one yellow, one pink) sitting on a cherry blossom branch singing joyfully, musical notes floating in the air, morning sun, bright, delightful"
+      },
+      {
+        text: "夜來風雨聲",
+        pinyin: "yè lái fēng yǔ shēng",
+        jyutping: "je6 loi4 fung1 jyu5 sing1",
+        story: "昨天晚上睡覺時，外面「嘩啦嘩啦」下大雨，風吹得樹葉「呼呼——」叫。狂風暴雨好像在給花園演奏一首熱鬧的交響樂呢！",
+        analysis: "『夜來』點出時間在昨晚，『風雨聲』將安睡與室外的風雨對比，增添了溫馨溫暖的感官觸覺。",
+        svg: (
+          <svg viewBox="0 0 400 300" className="w-full h-full">
+            <rect width="400" height="300" fill="#0f172a" rx="20" />
+            {/* Dark swirling wind clouds */}
+            <path d="M -50 50 Q 100 20, 250 50 Q 350 80, 450 40" stroke="#334155" strokeWidth="15" fill="none" strokeLinecap="round" opacity="0.4" />
+            <path d="M -20 100 Q 150 140, 420 80" stroke="#334155" strokeWidth="10" fill="none" strokeLinecap="round" opacity="0.4" />
+            {/* Rain Drops */}
+            <g stroke="#38bdf8" strokeWidth="2" strokeLinecap="round" opacity="0.7">
+              <line x1="50" y1="50" x2="30" y2="100" />
+              <line x1="150" y1="40" x2="130" y2="90" />
+              <line x1="250" y1="60" x2="230" y2="110" />
+              <line x1="350" y1="30" x2="330" y2="80" />
+              <line x1="90" y1="150" x2="70" y2="200" />
+              <line x1="190" y1="140" x2="170" y2="190" />
+              <line x1="290" y1="160" x2="270" y2="210" />
+              <line x1="380" y1="130" x2="360" y2="180" />
+            </g>
+            {/* Wind Blow Lines */}
+            <path d="M 80 120 Q 130 110, 160 130 Q 180 140, 200 130" stroke="#94a3b8" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.6" />
+            <path d="M 220 170 Q 270 160, 300 180" stroke="#94a3b8" strokeWidth="2.5" fill="none" strokeLinecap="round" opacity="0.6" />
+            {/* Tree bending in wind */}
+            <path d="M 350 300 Q 300 200, 320 140" stroke="#475569" strokeWidth="12" fill="none" />
+            <path d="M 320 140 Q 250 120, 230 130" stroke="#475569" strokeWidth="6" fill="none" />
+            <path d="M 320 140 Q 350 100, 370 110" stroke="#475569" strokeWidth="6" fill="none" />
+            {/* Bending green foliage */}
+            <circle cx="230" cy="130" r="25" fill="#1e3a1e" opacity="0.8" />
+            <circle cx="370" cy="110" r="30" fill="#1e3a1e" opacity="0.8" />
+          </svg>
+        ),
+        prompt: "A 3D Pixar style digital art, a dark and dramatic but cozy rainy night, wind swirls blowing through trees in a garden, glowing blue raindrops falling, swirling wind effects, high quality, charming"
+      },
+      {
+        text: "花落知多少",
+        pinyin: "huā luò zhī duō shǎo",
+        jyutping: "faa1 lok6 zi1 do1 siu2",
+        story: "風停啦！小花朵們昨晚跳完舞，都累得躺在綠色草地上睡著了。一朵、兩朵、三朵……哇，好多好多漂亮的花瓣，把大地鋪成彩色的地毯啦！",
+        analysis: "『花落』聯想風雨過後的景象，『知多少』以發問作結，留下了對春天美好事物的一絲愛憐與不捨，韻味悠長。",
+        svg: (
+          <svg viewBox="0 0 400 300" className="w-full h-full">
+            <rect width="400" height="300" fill="#f0fdf4" rx="20" />
+            {/* Green Hills in background */}
+            <path d="M 0 300 Q 150 200, 400 250 L 400 300 Z" fill="#bbf7d0" />
+            <path d="M 0 300 Q 250 220, 400 300 Z" fill="#86efac" />
+            {/* Tree with pink flowers */}
+            <path d="M 60 300 L 60 160" stroke="#78350f" strokeWidth="12" fill="none" />
+            <path d="M 60 180 Q 120 130, 160 150" stroke="#78350f" strokeWidth="6" fill="none" />
+            <circle cx="60" cy="130" r="45" fill="#fbcfe8" opacity="0.9" />
+            <circle cx="120" cy="140" r="35" fill="#fbcfe8" opacity="0.8" />
+            <circle cx="160" cy="150" r="25" fill="#fbcfe8" opacity="0.8" />
+            {/* Falling petals */}
+            <g fill="#f43f5e">
+              <path d="M 100 170 Q 105 185 100 200 Q 95 185 100 170 Z" />
+              <path d="M 180 180 Q 183 192 180 205 Z" transform="rotate(15 180 180)" />
+              <path d="M 250 160 Q 255 175 250 190 Z" transform="rotate(-25 250 160)" />
+            </g>
+            {/* Scattered petals on grass */}
+            <g fill="#ec4899">
+              <ellipse cx="120" cy="270" rx="10" ry="4" />
+              <ellipse cx="160" cy="280" rx="8" ry="3" />
+              <ellipse cx="220" cy="260" rx="9" ry="3.5" />
+              <ellipse cx="280" cy="275" rx="11" ry="5" />
+              <ellipse cx="320" cy="265" rx="7" ry="3" />
+              <ellipse cx="80" cy="285" rx="10" ry="4" />
+            </g>
+            {/* Cute Cartoon girl admiring */}
+            <g transform="translate(280, 170)">
+              <circle cx="20" cy="20" r="15" fill="#fbcfe8" />
+              {/* Hair */}
+              <path d="M 5 20 Q 20 0, 35 20 Z" fill="#1e293b" />
+              <circle cx="5" cy="22" r="5" fill="#1e293b" />
+              <circle cx="35" cy="22" r="5" fill="#1e293b" />
+              {/* Dress */}
+              <path d="M 5 60 L 10 35 L 30 35 L 35 60 Z" fill="#fb7185" />
+              {/* Smile */}
+              <path d="M 16 22 Q 20 26 24 22" stroke="#1e293b" strokeWidth="2" fill="none" />
+              {/* Happy eyes */}
+              <path d="M 10 16 Q 13 13 15 16" stroke="#1e293b" strokeWidth="1.5" fill="none" />
+              <path d="M 25 16 Q 27 13 29 16" stroke="#1e293b" strokeWidth="1.5" fill="none" />
+            </g>
+          </svg>
+        ),
+        prompt: "A 3D Pixar style digital art, a lush green meadow covered with dozens of tiny fallen pink cherry blossom petals under a tree, a cute cartoon toddler girl in a lovely pink dress smiling and looking down, bright spring morning"
+      }
+    ]
+  },
+  {
+    id: "deng-guan-que-lou",
+    title: "登鸛雀樓",
+    author: "王之渙",
+    dynasty: "唐",
+    theme: "登高望遠",
+    bgColor: "from-amber-50 to-orange-100",
+    primaryColor: "amber",
+    parentIntro: "這是一首格局宏大、富有哲理的登高名作。前兩句描繪了山河落日的壯麗，後兩句化為向上攀登的哲理。對三歲孩子來說，這首詩極具動作感，特別適合用來引導他們玩『爬高看遠』的遊戲。",
+    sentences: [
+      {
+        text: "白日依山盡",
+        pinyin: "bái rì yī shān jìn",
+        jyutping: "baak6 jat6 ji1 saan1 zeon6",
+        story: "傍晚到啦，大大的、圓圓的太陽公公（白日）累了。他正慢慢地靠在大山旁邊，一點一點往下溜，準備要睡覺囉！",
+        analysis: "『白日』指落日，『依山盡』將太陽落山的動態寫得無比沉穩、壯麗，勾勒出夕陽西下的宏大空間感。",
+        svg: (
+          <svg viewBox="0 0 400 300" className="w-full h-full">
+            <rect width="400" height="300" fill="#ffedd5" rx="20" />
+            {/* Sun setting */}
+            <circle cx="200" cy="180" r="50" fill="#f97316" filter="drop-shadow(0 0 20px rgba(249,115,22,0.6))" />
+            <circle cx="200" cy="180" r="40" fill="#facc15" />
+            {/* Mountains in layers */}
+            <path d="M 0 300 Q 120 150, 240 220 L 400 300 Z" fill="#1e3a1e" opacity="0.6" />
+            <path d="M 160 300 Q 280 180, 400 240 L 400 300 Z" fill="#14532d" />
+            <path d="M -50 300 Q 80 200, 210 300 Z" fill="#166534" />
+            {/* Birds flying far away */}
+            <path d="M 60 70 Q 65 65, 70 70 Q 75 65, 80 70" stroke="#c2410c" strokeWidth="2" fill="none" />
+            <path d="M 290 90 Q 295 85, 300 90 Q 305 85, 310 90" stroke="#c2410c" strokeWidth="2" fill="none" />
+            {/* Clouds */}
+            <path d="M 20 120 C 50 120, 60 100, 80 110 C 100 120, 130 110, 140 130 L 20 130 Z" fill="#fed7aa" opacity="0.8" />
+            <path d="M 260 100 C 280 100, 290 80, 310 90 C 330 100, 350 90, 360 110 L 260 110 Z" fill="#fed7aa" opacity="0.8" />
+          </svg>
+        ),
+        prompt: "A beautiful 3D Pixar style digital art, a massive vibrant orange and yellow sun setting perfectly behind layered green and purple rolling mountain peaks, warm golden hour glowing sky, birds in distance"
+      },
+      {
+        text: "黃河入海流",
+        pinyin: "huáng hé rù hǎi liú",
+        jyutping: "wong4 ho4 jap6 hoi2 lau4",
+        story: "你看，好長好長、像一條金色大絲帶的黃河，嘩啦嘩啦地向前奔跑，最後開心地撲進了大藍海的懷抱裡！",
+        analysis: "『黃河入海流』是極具動態和空間延展的句子。從高處俯瞰，大河奔流不息注入大海，心胸頓時開闊。",
+        svg: (
+          <svg viewBox="0 0 400 300" className="w-full h-full">
+            <rect width="400" height="300" fill="#bae6fd" rx="20" />
+            {/* Golden Yellow River winding from mountains */}
+            <path d="M 400 50 Q 300 60, 220 120 T 100 220 T 0 300" stroke="#facc15" strokeWidth="25" strokeLinecap="round" fill="none" />
+            {/* Wave details in River */}
+            <path d="M 400 52 Q 300 62, 220 122 T 100 222 T 0 302" stroke="#eab308" strokeWidth="4" strokeLinecap="round" fill="none" opacity="0.6" />
+            {/* Sea area at bottom left */}
+            <path d="M 0 160 Q 80 170, 120 220 T 250 300 L 0 300 Z" fill="#0284c7" />
+            {/* Waves */}
+            <path d="M 20 190 Q 40 180, 60 195" stroke="#fff" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M 80 230 Q 100 220, 120 235" stroke="#fff" strokeWidth="3" fill="none" strokeLinecap="round" />
+            {/* Little sailboat */}
+            <g transform="translate(140, 170)">
+              <polygon points="10,25 25,5 25,25" fill="#fff" />
+              <rect x="5" y="25" width="25" height="6" rx="2" fill="#78350f" />
+            </g>
+          </svg>
+        ),
+        prompt: "A 3D Pixar style digital art, a winding golden river flowing across green plains and emptying into a vast, deep blue ocean with sparkling white waves, clear sunny sky, mini sailboat, highly detailed"
+      },
+      {
+        text: "欲窮千里目",
+        pinyin: "yù qióng qiān lǐ mù",
+        jyutping: "juk6 kung4 cin1 lei5 muk6",
+        story: "寶貝，把小手手像這樣搭在眼睛上面（家長示範遮陽動作～），如果你想要看得很遠、很遠，看到更多美麗的景色……",
+        analysis: "『欲窮』代表著探索未知的渴望，『千里目』是目標。這句話啟迪孩子，美景值得我們去追求與探索。",
+        svg: (
+          <svg viewBox="0 0 400 300" className="w-full h-full">
+            <rect width="400" height="300" fill="#eff6ff" rx="20" />
+            {/* Sparkles / Vision lines */}
+            <g stroke="#3b82f6" strokeWidth="2" strokeDasharray="5,5">
+              <line x1="160" y1="110" x2="300" y2="70" />
+              <line x1="160" y1="120" x2="320" y2="120" />
+              <line x1="160" y1="130" x2="300" y2="170" />
+            </g>
+            {/* Sparkling stars at the end of vision */}
+            <polygon points="300,60 303,67 310,70 303,73 300,80 297,73 290,70 297,67" fill="#facc15" />
+            <polygon points="330,110 333,117 340,120 333,123 330,130 327,123 320,120 327,117" fill="#facc15" />
+            <polygon points="295,170 298,177 305,180 298,183 295,190 292,183 285,180 292,177" fill="#facc15" />
+            {/* Cute boy with hand on brow */}
+            <g transform="translate(60, 70)">
+              <circle cx="60" cy="60" r="35" fill="#fbcfe8" />
+              <path d="M 25 60 Q 60 15, 95 60 Z" fill="#1e293b" /> {/* Hair */}
+              <circle cx="45" cy="18" r="8" fill="#1e293b" /> {/* Bun */}
+              {/* Hand saluting/shading eyes */}
+              <path d="M 85 55 Q 85 40, 70 42" stroke="#fbcfe8" strokeWidth="10" strokeLinecap="round" fill="none" />
+              {/* Eye looking forward enthusiastically */}
+              <circle cx="75" cy="62" r="5" fill="#1e293b" />
+              <circle cx="77" cy="60" r="2" fill="#fff" /> {/* Eye light */}
+              <path d="M 70 52 Q 75 50 80 53" stroke="#1e293b" strokeWidth="2" fill="none" />
+              <path d="M 70 72 Q 75 75 80 72" stroke="#1e293b" strokeWidth="2" fill="none" /> {/* Smile */}
+              {/* Robe */}
+              <path d="M 40 150 L 30 95 L 80 95 L 70 150 Z" fill="#3b82f6" />
+            </g>
+          </svg>
+        ),
+        prompt: "A 3D Pixar style digital art, close up of a cute cartoon boy with hand over his brow looking forward with bright sparkly big eyes, looking at a vast magical beautiful landscape, hopeful, adorable"
+      },
+      {
+        text: "更上一層樓",
+        pinyin: "gèng shàng yī céng lóu",
+        jyutping: "gang1 soeng5 jat1 cang4 lau4",
+        story: "那我們就要——一、二、三，腳步抬高，再往上爬一層樓梯！爬得越高，看得越遠，看到的世界就更漂亮囉！",
+        analysis: "這句經典哲理成了千百年的勵志座右銘。以『向上爬』比喻人生境界的提升，充滿積極進取的正面能量。",
+        svg: (
+          <svg viewBox="0 0 400 300" className="w-full h-full">
+            <rect width="400" height="300" fill="#ffedd5" rx="20" />
+            {/* Pagoda / Tower */}
+            <g transform="translate(180, 20)">
+              {/* Base */}
+              <rect x="10" y="220" width="140" height="40" fill="#94a3b8" />
+              {/* 1st Floor */}
+              <rect x="20" y="140" width="120" height="80" fill="#ef4444" />
+              <rect x="60" y="160" width="40" height="60" rx="5" fill="#78350f" /> {/* Door */}
+              {/* Roof 1 */}
+              <polygon points="5,140 70,110 155,140" fill="#1e293b" />
+              {/* 2nd Floor */}
+              <rect x="35" y="60" width="90" height="50" fill="#ef4444" />
+              <rect x="70" y="75" width="20" height="35" rx="3" fill="#facc15" /> {/* Lit Window */}
+              {/* Roof 2 */}
+              <polygon points="20,60 70,35 120,60" fill="#1e293b" />
+              <circle cx="70" cy="25" r="8" fill="#facc15" /> {/* Golden Peak */}
+            </g>
+            {/* Stairs */}
+            <path d="M 20 280 L 80 280 L 80 250 L 140 250 L 140 220 L 200 220" stroke="#64748b" strokeWidth="8" strokeLinecap="round" fill="none" />
+            {/* Cute boy climbing stairs with foot up */}
+            <g transform="translate(50, 155)">
+              <circle cx="30" cy="30" r="16" fill="#fbcfe8" />
+              <path d="M 15 30 Q 30 10, 45 30 Z" fill="#1e293b" /> {/* Hair */}
+              <path d="M 15 75 L 10 45 L 40 45 L 35 75 Z" fill="#3b82f6" /> {/* Body */}
+              {/* Happy eyes */}
+              <path d="M 22 26 Q 25 24 28 26" stroke="#1e293b" strokeWidth="1.5" fill="none" />
+              {/* Active climbing leg */}
+              <path d="M 20 75 Q 35 70, 45 80" stroke="#3b82f6" strokeWidth="6" strokeLinecap="round" fill="none" />
+            </g>
+          </svg>
+        ),
+        prompt: "A 3D Pixar style digital art, a cute traditional red Chinese pagoda tower, a little cartoon boy climbing stone steps to the next level enthusiastically, bright blue sky, fun and active"
+      }
+    ]
+  },
+  {
+    id: "ming-ri-ge",
+    title: "明日歌",
+    author: "錢福",
+    dynasty: "明",
+    theme: "珍惜時間",
+    bgColor: "from-blue-50 to-indigo-100",
+    primaryColor: "blue",
+    parentIntro: "這首通俗詩直擊人心，用重複的『明日』敲響時間的警鐘。對三歲孩子來說，『明天』是個抽象概念。透過這首詩與沙漏、時鐘的畫面，可以幫他們建立起『今天的事今天做』的好習慣。",
+    sentences: [
+      {
+        text: "明日復明日",
+        pinyin: "míng rì fù míng rì",
+        jyutping: "ming4 jat6 fuk6 ming4 jat6",
+        story: "「等明天、再等明天……」小指頭算一算，如果每件事都說「等明天再做」，那就會有好多個「明天」一直來、一直來喔！",
+        analysis: "『明日復明日』運用頂真與復沓，重複的字句營造出時間不斷流逝、慣性拖延的循環感。",
+        svg: (
+          <svg viewBox="0 0 400 300" className="w-full h-full">
+            <rect width="400" height="300" fill="#e0f2fe" rx="20" />
+            {/* Cute Smiling Alarm Clock */}
+            <g transform="translate(130, 80)">
+              <rect x="0" y="0" width="140" height="140" rx="70" fill="#f43f5e" stroke="#fff" strokeWidth="6" />
+              <circle cx="70" cy="70" r="55" fill="#fff" />
+              {/* Clock Ears / Bells */}
+              <circle cx="20" cy="10" r="20" fill="#be123c" />
+              <circle cx="120" cy="10" r="20" fill="#be123c" />
+              <rect x="15" y="2" width="10" height="12" fill="#fff" transform="rotate(-30 15 2)" />
+              <rect x="115" y="2" width="10" height="12" fill="#fff" transform="rotate(30 115 2)" />
+              {/* Clock Feet */}
+              <rect x="25" y="130" width="20" height="20" rx="5" fill="#be123c" />
+              <rect x="95" y="130" width="20" height="20" rx="5" fill="#be123c" />
+              {/* Clock Face */}
+              <circle cx="50" cy="55" r="4" fill="#000" />
+              <circle cx="90" cy="55" r="4" fill="#000" />
+              <path d="M 60 80 Q 70 90 80 80" stroke="#000" strokeWidth="3" fill="none" strokeLinecap="round" />
+              {/* Hands ticking fast */}
+              <line x1="70" y1="70" x2="70" y2="35" stroke="#1e293b" strokeWidth="4" strokeLinecap="round" />
+              <line x1="70" y1="70" x2="105" y2="70" stroke="#1e293b" strokeWidth="3" strokeLinecap="round" />
+            </g>
+            {/* Speed lines indicating fast clock ticking */}
+            <path d="M 90 60 Q 70 50, 60 70" stroke="#38bdf8" strokeWidth="3" fill="none" strokeLinecap="round" />
+            <path d="M 310 60 Q 330 50, 340 70" stroke="#38bdf8" strokeWidth="3" fill="none" strokeLinecap="round" />
+          </svg>
+        ),
+        prompt: "A 3D Pixar style digital art, a cute, adorable, shiny red cartoon alarm clock with a happy smiling face, its hands spinning around representing passing time, colorful dynamic background"
+      },
+      {
+        text: "明日何其多",
+        pinyin: "míng rì hé qí duō",
+        jyutping: "ming4 jat6 ho4 kei4 do1",
+        story: "「明天」真的有那麼多嗎？（帶寶寶一起搖搖頭～）其實，時間跑得比小兔子還要快，如果一直等，好玩的今天就溜走囉！",
+        analysis: "『何其多』是感嘆，也是反問。看似多，實則是在消耗生命。用詰問促使讀者警醒。",
+        svg: (
+          <svg viewBox="0 0 400 300" className="w-full h-full">
+            <rect width="400" height="300" fill="#e0f2fe" rx="20" />
+            {/* Road of Calendars going into distance */}
+            <path d="M 200 120 L 0 300 L 400 300 Z" fill="#cbd5e1" />
+            {/* Multiple calendar pages flying like leaves */}
+            <g fill="#fff" stroke="#94a3b8" strokeWidth="2">
+              {/* Page 1 */}
+              <rect x="60" y="160" width="50" height="50" rx="5" transform="rotate(-15 60 160)" />
+              <rect x="70" y="150" width="40" height="10" rx="2" fill="#ef4444" transform="rotate(-15 60 160)" />
+              {/* Page 2 */}
+              <rect x="280" y="150" width="45" height="45" rx="5" transform="rotate(15 280 150)" />
+              <rect x="285" y="142" width="35" height="8" rx="2" fill="#3b82f6" transform="rotate(15 280 150)" />
+              {/* Page 3 */}
+              <rect x="180" y="130" width="30" height="30" rx="3" />
+              <rect x="183" y="125" width="24" height="6" rx="1" fill="#10b981" />
+            </g>
+            {/* Cute bunny running fast */}
+            <g transform="translate(130, 200)">
+              <ellipse cx="40" cy="25" rx="25" ry="18" fill="#fff" />
+              <circle cx="65" cy="15" r="12" fill="#fff" />
+              {/* Ears */}
+              <ellipse cx="65" cy="-2" rx="5" ry="12" fill="#fff" transform="rotate(10 65 -2)" />
+              <ellipse cx="65" cy="-2" rx="3" ry="8" fill="#fecdd3" transform="rotate(10 65 -2)" />
+              {/* Eye */}
+              <circle cx="70" cy="12" r="2" fill="#ef4444" />
+              {/* Tail */}
+              <circle cx="12" cy="22" r="6" fill="#fff" />
+              {/* Running feet */}
+              <ellipse cx="25" cy="40" rx="10" ry="4" fill="#fff" />
+              <ellipse cx="50" cy="40" rx="10" ry="4" fill="#fff" />
+            </g>
+          </svg>
+        ),
+        prompt: "A 3D Pixar style digital art, cartoon white bunny running extremely fast down a winding path, calendar sheets flying in the air like autumn leaves, funny, whimsical, dynamic motion blur"
+      },
+      {
+        text: "我生待明日",
+        pinyin: "wǒ shēng dài mìng rì",
+        jyutping: "ngo5 sang1 doi6 ming4 jat6",
+        story: "如果我們做什麼事都抱著小手說：「明天再說啦！」那我們就會像個偷懶的小熊，一直睡懶覺、什麼好玩的事都沒做成。",
+        analysis: "『待明日』寫出被動、懈怠的心態。生命在等待中被消耗，直接點出了普通人最容易犯的拖延毛病。",
+        svg: (
+          <svg viewBox="0 0 400 300" className="w-full h-full">
+            <rect width="400" height="300" fill="#e0f2fe" rx="20" />
+            {/* Cozy room with sleepy lazy cartoon bear */}
+            <g transform="translate(120, 90)">
+              {/* Armchair/Sofa */}
+              <rect x="-20" y="60" width="200" height="80" rx="15" fill="#f97316" />
+              <rect x="-10" y="20" width="40" height="80" rx="10" fill="#ea580c" />
+              <rect x="130" y="20" width="40" height="80" rx="10" fill="#ea580c" />
+              {/* Teddy Bear sleeping */}
+              <circle cx="80" cy="30" r="30" fill="#b45309" />
+              {/* Bear Ears */}
+              <circle cx="55" cy="10" r="10" fill="#b45309" />
+              <circle cx="55" cy="10" r="5" fill="#fed7aa" />
+              <circle cx="105" cy="10" r="10" fill="#b45309" />
+              <circle cx="105" cy="10" r="5" fill="#fed7aa" />
+              {/* Bear Snout */}
+              <ellipse cx="80" cy="38" rx="12" ry="8" fill="#fed7aa" />
+              <polygon points="76,34 84,34 80,40" fill="#000" />
+              {/* Closed Eyes */}
+              <path d="M 60 30 Q 65 35 70 32" stroke="#000" strokeWidth="2" fill="none" />
+              <path d="M 90 30 Q 95 35 100 32" stroke="#000" strokeWidth="2" fill="none" />
+              {/* Chubby Body */}
+              <ellipse cx="80" cy="90" rx="45" ry="35" fill="#b45309" />
+              {/* Folded paws */}
+              <ellipse cx="50" cy="85" rx="12" ry="8" fill="#92400e" />
+              <ellipse cx="110" cy="85" rx="12" ry="8" fill="#92400e" />
+            </g>
+          </svg>
+        ),
+        prompt: "A 3D Pixar style digital art, a chubby cute cartoon brown teddy bear sleeping lazily on a giant bright orange beanbag sofa, sleeping mask on forehead, snacks around, cozy and lazy room atmosphere"
+      },
+      {
+        text: "萬事成蹉跎",
+        pinyin: "wàn shì chéng cuō tuó",
+        jyutping: "maan6 si6 sing4 co1 to4",
+        story: "唉呀！最後，時間全部像沙子一樣溜走囉！想搭的積木沒搭好，想聽的故事也沒聽到，多可惜呀。所以，我們今天的事情，今天就開心地把它做完，好不好？",
+        analysis: "『蹉跎』指虛度光陰。此句作為警示高潮，將前面累積的『明日』化為萬事落空的結局，促人自省，極具震撼力。",
+        svg: (
+          <svg viewBox="0 0 400 300" className="w-full h-full">
+            <rect width="400" height="300" fill="#e2e8f0" rx="20" />
+            {/* Giant Hourglass */}
+            <g transform="translate(140, 50)">
+              {/* Wooden Frames */}
+              <rect x="10" y="0" width="100" height="15" rx="4" fill="#78350f" />
+              <rect x="10" y="185" width="100" height="15" rx="4" fill="#78350f" />
+              <line x1="20" y1="15" x2="20" y2="185" stroke="#94a3b8" strokeWidth="6" />
+              <line x1="100" y1="15" x2="100" y2="185" stroke="#94a3b8" strokeWidth="6" />
+              {/* Glass body */}
+              <path d="M 30 15 L 90 15 Q 90 70, 65 100 Q 90 130, 90 185 L 30 185 Q 30 130, 55 100 Q 30 70, 30 15 Z" fill="none" stroke="#e2e8f0" strokeWidth="4" />
+              {/* Top Sand running out */}
+              <path d="M 35 25 L 85 25 Q 85 65, 63 95 L 57 95 Q 35 65, 35 25 Z" fill="#facc15" opacity="0.4" />
+              {/* Running sand stream */}
+              <line x1="60" y1="95" x2="60" y2="180" stroke="#facc15" strokeWidth="4" strokeDasharray="5,5" />
+              {/* Bottom Sand piling up */}
+              <path d="M 32 185 Q 60 140, 88 185 Z" fill="#facc15" />
+            </g>
+            {/* Sad unfinished toys (Unfinished toy castle) */}
+            <g transform="translate(30, 180)">
+              <rect x="10" y="40" width="30" height="30" fill="#f43f5e" rx="4" opacity="0.7" />
+              <polygon points="25,10 10,40 40,40" fill="#3b82f6" opacity="0.7" />
+              <rect x="45" y="50" width="20" height="20" fill="#10b981" rx="2" opacity="0.7" />
+            </g>
+            {/* Clock fading away */}
+            <circle cx="320" cy="90" r="25" fill="none" stroke="#94a3b8" strokeWidth="3" strokeDasharray="3,3" />
+          </svg>
+        ),
+        prompt: "A 3D Pixar style digital art, a magical giant hourglass with shining yellow sand running down, in a slightly dusty attic with unfinished toys and blocks lying around, artistic, educational, nostalgic"
+      }
+    ]
+  }
+];
+
+export default function App() {
+  const [currentPoemIndex, setCurrentPoemIndex] = useState(0);
+  const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
+  const [pronunciationMode, setPronunciationMode] = useState('pinyin'); // 'pinyin' or 'jyutping'
+  const [showRuby, setShowRuby] = useState(true);
+  const [starsCollected, setStarsCollected] = useState({}); // format: { 'poem-id_sentence-index': true }
+  const [generationLoading, setGenerationLoading] = useState({}); // format: { 'poem-id_sentence-index': boolean }
+  const [aiImages, setAiImages] = useState({}); // format: { 'poem-id_sentence-index': base64_url }
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [showCertificate, setShowCertificate] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [customApiKey, setCustomApiKey] = useState("");
+
+  const activePoem = poemsData[currentPoemIndex];
+  const activeSentence = activePoem.sentences[currentSentenceIndex];
+  const activeStateKey = `${activePoem.id}_${currentSentenceIndex}`;
+
+  // Reset sentence index when changing poems
+  const handlePoemSelect = (index) => {
+    setCurrentPoemIndex(index);
+    setCurrentSentenceIndex(0);
+  };
+
+  const handleNextSentence = () => {
+    if (currentSentenceIndex < activePoem.sentences.length - 1) {
+      setCurrentSentenceIndex(prev => prev + 1);
+    } else if (currentPoemIndex < poemsData.length - 1) {
+      setCurrentPoemIndex(prev => prev + 1);
+      setCurrentSentenceIndex(0);
+    }
+  };
+
+  const handlePrevSentence = () => {
+    if (currentSentenceIndex > 0) {
+      setCurrentSentenceIndex(prev => prev - 1);
+    } else if (currentPoemIndex > 0) {
+      setCurrentPoemIndex(prev => prev - 1);
+      setCurrentSentenceIndex(poemsData[currentPoemIndex - 1].sentences.length - 1);
+    }
+  };
+
+  // Gamification: Star collected!
+  const toggleStar = (key) => {
+    setStarsCollected(prev => {
+      const next = { ...prev, [key]: !prev[key] };
+      
+      // Check if all stars in current poem are collected
+      const currentPoemStarsCount = activePoem.sentences.filter((_, idx) => next[`${activePoem.id}_${idx}`]).length;
+      if (currentPoemStarsCount === activePoem.sentences.length) {
+        // Trigger certificate for this poem!
+        setTimeout(() => {
+          setShowConfetti(true);
+          setShowCertificate(true);
+        }, 300);
+      }
+      return next;
+    });
+  };
+
+  // Convert PCM Base64 from Gemini TTS to WAV format
+  const pcmToWav = (pcmBase64, sampleRate = 24000) => {
+    try {
+      const binaryString = window.atob(pcmBase64);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const buffer = bytes.buffer;
+      const wavHeader = new ArrayBuffer(44);
+      const view = new DataView(wavHeader);
+      
+      view.setUint32(0, 0x52494646, false); // "RIFF"
+      view.setUint32(4, 36 + buffer.byteLength, true); // size
+      view.setUint32(8, 0x57415645, false); // "WAVE"
+      view.setUint32(12, 0x666d7420, false); // "fmt "
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true); // Raw PCM
+      view.setUint16(22, 1, true); // Mono
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, sampleRate * 2, true); // Byte rate
+      view.setUint16(32, 2, true); // Block align
+      view.setUint16(34, 16, true); // 16-bit
+      view.setUint32(36, 0x64617461, false); // "data"
+      view.setUint32(40, buffer.byteLength, true);
+
+      const blob = new Blob([wavHeader, buffer], { type: 'audio/wav' });
+      return URL.createObjectURL(blob);
+    } catch (e) {
+      console.error("Failed to convert PCM to WAV", e);
+      return null;
+    }
+  };
+
+  // Play Story Aloud via Gemini TTS (with fallback)
+  const handlePlayAudio = async () => {
+    if (isPlayingAudio) return;
+    setIsPlayingAudio(true);
+    
+    // Construct text for reading (kid story narration)
+    const textToSpeak = `說故事時間。這句詩是：${activeSentence.text}。意思是：${activeSentence.story}`;
+    
+    const actualApiKey = customApiKey || ""; // Fallback to environment at runtime if empty
+    
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${actualApiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: `Say cheerfully in traditional Cantonese or Mandarin accent suitable for child storybook: ${textToSpeak}` }] }],
+          generationConfig: {
+            responseModalities: ["AUDIO"],
+            speechConfig: {
+              voiceConfig: {
+                prebuiltVoiceConfig: { voiceName: "Kore" } // Cheerful high-quality storytelling voice
+              }
+            }
+          },
+          model: "gemini-2.5-flash-preview-tts"
+        })
+      });
+
+      if (!response.ok) throw new Error("TTS API call failed");
+      const data = await response.json();
+      const pcmBase64 = data.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+      
+      if (pcmBase64) {
+        const audioUrl = pcmToWav(pcmBase64);
+        if (audioUrl) {
+          const audio = new Audio(audioUrl);
+          audio.onended = () => setIsPlayingAudio(false);
+          audio.onerror = () => setIsPlayingAudio(false);
+          await audio.play();
+        } else {
+          setIsPlayingAudio(false);
+        }
+      } else {
+        // Fallback: browser speech synthesis if API fails or no key
+        speakFallback(textToSpeak);
+      }
+    } catch (error) {
+      console.warn("Gemini TTS failed, falling back to Web Speech API", error);
+      speakFallback(textToSpeak);
+    }
+  };
+
+  const speakFallback = (text) => {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = pronunciationMode === 'jyutping' ? 'zh-HK' : 'zh-CN';
+      utterance.rate = 0.85; // slightly slower for toddlers
+      utterance.onend = () => setIsPlayingAudio(false);
+      utterance.onerror = () => setIsPlayingAudio(false);
+      window.speechSynthesis.speak(utterance);
+    } else {
+      setIsPlayingAudio(false);
+    }
+  };
+
+  // Generate high-end child-friendly AI image via Imagen 4.0
+  const handleGenerateAIImage = async () => {
+    const key = activeStateKey;
+    setGenerationLoading(prev => ({ ...prev, [key]: true }));
+
+    const promptText = activeSentence.prompt;
+    const actualApiKey = customApiKey || "";
+
+    try {
+      // Exponential Backoff setup (retry up to 5 times)
+      let delay = 1000;
+      let response;
+      for (let i = 0; i < 5; i++) {
+        response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${actualApiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            instances: [{ prompt: promptText }],
+            parameters: { sampleCount: 1 }
+          })
+        });
+        if (response.ok) break;
+        await new Promise(res => setTimeout(res, delay));
+        delay *= 2;
+      }
+
+      if (!response.ok) throw new Error("Imagen generation failed after retries.");
+      const result = await response.json();
+      const bytes64 = result.predictions?.[0]?.bytesBase64Encoded;
+      
+      if (bytes64) {
+        const imgUrl = `data:image/png;base64,${bytes64}`;
+        setAiImages(prev => ({ ...prev, [key]: imgUrl }));
+      } else {
+        throw new Error("No image data returned from API.");
+      }
+    } catch (error) {
+      console.error(error);
+      // Fallback notification inside app state (user-friendly banner)
+      alert("AI圖片生成失敗，建議確認您的API密鑰。我們已自動切換回可愛的手繪插圖！");
+    } finally {
+      setGenerationLoading(prev => ({ ...prev, [key]: false }));
+    }
+  };
+
+  const resetAllStars = () => {
+    setStarsCollected({});
+    setShowCertificate(false);
+    setShowConfetti(false);
+  };
+
+  // Help parse characters with ruby annotations nicely
+  const renderRubyText = (char, pinyinText, jyutpingText) => {
+    const guide = pronunciationMode === 'pinyin' ? pinyinText : jyutpingText;
+    if (!showRuby) return <span className="text-gray-800 text-3xl md:text-5xl font-bold font-serif mx-0.5">{char}</span>;
+    return (
+      <ruby className="ruby-container mx-1">
+        <span className="text-gray-800 text-3xl md:text-5xl font-bold font-serif">{char}</span>
+        <rt className="text-xs md:text-sm text-indigo-600 font-mono tracking-wider mt-1 opacity-90 select-none">
+          {guide}
+        </rt>
+      </ruby>
+    );
+  };
+
+  // Split string into chars
+  const charArray = activeSentence.text.split('');
+  // Pronunciation mapping arrays corresponding to characters
+  const getGuidesForSentence = () => {
+    const pinyins = activeSentence.pinyin.split(' ');
+    const jyutpings = activeSentence.jyutping.split(' ');
+    return { pinyins, jyutpings };
+  };
+  const { pinyins, jyutpings } = getGuidesForSentence();
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-amber-50/70 via-indigo-50/50 to-emerald-50/70 py-6 px-4 md:px-8 font-sans pb-12">
+      
+      {/* Top Banner / Navigation */}
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 mb-6 bg-white/80 backdrop-blur p-4 rounded-2xl shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="bg-indigo-600 text-white p-2.5 rounded-xl shadow-md animate-bounce">
+            <BookOpen size={28} />
+          </div>
+          <div>
+            <h1 className="text-xl md:text-2xl font-bold text-slate-800">幼兒古詩繪本與故事樂園</h1>
+            <p className="text-xs text-slate-500">陪伴 3 歲寶寶在聲音與畫作中翱翔中文之美</p>
+          </div>
+        </div>
+
+        {/* Dynamic Controls panel */}
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Ruby annotations toggle */}
+          <button 
+            onClick={() => setShowRuby(!showRuby)}
+            className={`px-3.5 py-2 rounded-xl text-xs md:text-sm font-medium flex items-center gap-1.5 transition-all ${showRuby ? 'bg-indigo-100 text-indigo-700 shadow-sm' : 'bg-slate-100 text-slate-600'}`}
+          >
+            <Languages size={16} />
+            {showRuby ? "隱藏拼音" : "顯示拼音"}
+          </button>
+
+          {/* Pronunciation selector */}
+          {showRuby && (
+            <div className="bg-slate-100 p-1 rounded-xl flex">
+              <button 
+                onClick={() => setPronunciationMode('pinyin')}
+                className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${pronunciationMode === 'pinyin' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500'}`}
+              >
+                拼音 (Mandarin)
+              </button>
+              <button 
+                onClick={() => setPronunciationMode('jyutping')}
+                className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${pronunciationMode === 'jyutping' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500'}`}
+              >
+                粵拼 (Cantonese)
+              </button>
+            </div>
+          )}
+
+          {/* Reset progress */}
+          <button 
+            onClick={resetAllStars}
+            className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all"
+            title="重設學習星章"
+          >
+            <RotateCcw size={18} />
+          </button>
+        </div>
+      </div>
+
+      {/* Secret API Key Drawer (Optional for users with Gemini Key) */}
+      <div className="max-w-6xl mx-auto mb-6">
+        <div className="collapse bg-white/40 border border-slate-200/50 rounded-xl">
+          <input type="checkbox" className="peer" /> 
+          <div className="collapse-title text-xs text-slate-500 cursor-pointer flex items-center gap-1 p-3">
+            <HelpCircle size={14} /> 點此可填入您的 Gemini API 密鑰（以體驗完整 AI 繪圖與 AI 高級故事語音功能，否則使用內置手繪插圖與網頁基礎語音）
+          </div>
+          <div className="collapse-content px-4 pb-3">
+            <input 
+              type="password" 
+              placeholder="請輸入您的 Gemini API 密鑰" 
+              value={customApiKey} 
+              onChange={(e) => setCustomApiKey(e.target.value)}
+              className="w-full md:w-1/2 p-2 text-xs border border-slate-300 rounded-lg bg-white/95 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Main Hub Layout */}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        {/* Left Column: Switch Poems */}
+        <div className="lg:col-span-3 flex lg:flex-col gap-2 overflow-x-auto pb-2 lg:pb-0 scrollbar-none">
+          {poemsData.map((poem, index) => {
+            const isSelected = currentPoemIndex === index;
+            // Count stars earned in this poem
+            const starsEarned = poem.sentences.filter((_, idx) => starsCollected[`${poem.id}_${idx}`]).length;
+            const isCompleted = starsEarned === poem.sentences.length;
+
+            return (
+              <button
+                key={poem.id}
+                onClick={() => handlePoemSelect(index)}
+                className={`flex-shrink-0 w-44 lg:w-full p-4 rounded-2xl text-left transition-all relative overflow-hidden flex flex-col justify-between ${
+                  isSelected 
+                    ? `bg-gradient-to-br ${poem.bgColor} border-2 border-indigo-500/30 shadow-md transform -translate-y-1 lg:translate-y-0 lg:translate-x-1` 
+                    : "bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-sm"
+                }`}
+              >
+                {/* Completion badge */}
+                {isCompleted && (
+                  <div className="absolute top-2 right-2 text-amber-500 animate-pulse">
+                    <Award size={20} />
+                  </div>
+                )}
+
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{poem.dynasty}代 · {poem.author}</span>
+                  <h3 className="text-lg font-bold text-slate-800 mt-0.5">《{poem.title}》</h3>
+                </div>
+
+                <div className="flex items-center justify-between mt-4">
+                  <span className="text-[11px] text-slate-500 bg-slate-100/80 px-2 py-0.5 rounded-md">{poem.theme}</span>
+                  <div className="flex items-center gap-1">
+                    <Star size={12} className={starsEarned > 0 ? "fill-amber-400 stroke-amber-500" : "text-slate-300"} />
+                    <span className="text-xs font-bold text-slate-600">{starsEarned}/{poem.sentences.length}</span>
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Middle/Right Column: Main Poem Viewer & Interactive Story Book */}
+        <div className="lg:col-span-9 flex flex-col gap-6">
+          
+          {/* Active Poem Card */}
+          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+            
+            {/* Header Area */}
+            <div className={`p-4 md:p-6 bg-gradient-to-r ${activePoem.bgColor} flex justify-between items-center border-b border-slate-100`}>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold px-2 py-0.5 bg-white/60 text-slate-700 rounded-full">{activePoem.dynasty}代</span>
+                  <span className="text-xs font-semibold text-indigo-700">{activePoem.author}</span>
+                </div>
+                <h2 className="text-2xl font-black text-slate-800 mt-1">《{activePoem.title}》</h2>
+              </div>
+
+              {/* Step indicator */}
+              <div className="flex items-center gap-1.5 bg-white/70 backdrop-blur-sm py-1 px-3 rounded-full border border-slate-200/50">
+                {activePoem.sentences.map((_, idx) => (
+                  <button 
+                    key={idx}
+                    onClick={() => setCurrentSentenceIndex(idx)}
+                    className={`w-3 h-3 rounded-full transition-all ${idx === currentSentenceIndex ? 'bg-indigo-600 scale-125' : 'bg-slate-300'}`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Core Interaction Screen */}
+            <div className="p-6 md:p-8 flex flex-col lg:grid lg:grid-cols-12 gap-8 items-center">
+              
+              {/* Left Part: Image Illustration Panel (6 Cols) */}
+              <div className="lg:col-span-6 w-full max-w-sm lg:max-w-none flex flex-col gap-3">
+                <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 shadow-inner flex items-center justify-center">
+                  
+                  {/* Dynamic Loading */}
+                  {generationLoading[activeStateKey] && (
+                    <div className="absolute inset-0 bg-slate-950/80 z-20 flex flex-col items-center justify-center p-6 text-center text-white backdrop-blur-sm">
+                      <div className="relative w-16 h-16 mb-4">
+                        <div className="absolute inset-0 rounded-full border-4 border-slate-700 border-t-indigo-400 animate-spin"></div>
+                        <Sparkles size={24} className="absolute inset-0 m-auto text-indigo-300 animate-pulse" />
+                      </div>
+                      <p className="text-sm font-bold">Imagen AI 正在精心調色繪製中...</p>
+                      <p className="text-[10px] text-slate-400 mt-1">大約需要 3-5 秒，為寶寶打造最精美的童話世界</p>
+                    </div>
+                  )}
+
+                  {/* Render Image: AI or default SVG */}
+                  {aiImages[activeStateKey] ? (
+                    <img 
+                      src={aiImages[activeStateKey]} 
+                      alt={activeSentence.text} 
+                      className="w-full h-full object-cover animate-fade-in"
+                    />
+                  ) : (
+                    <div className="w-full h-full p-4 flex items-center justify-center">
+                      {activeSentence.svg}
+                    </div>
+                  )}
+
+                  {/* AI Regenerate Trigger Button overlay */}
+                  <button
+                    onClick={handleGenerateAIImage}
+                    disabled={generationLoading[activeStateKey]}
+                    className="absolute bottom-3 right-3 bg-white/90 hover:bg-white backdrop-blur-sm text-indigo-700 text-xs font-bold py-2 px-3 rounded-xl shadow-md flex items-center gap-1.5 transition-all hover:scale-105 active:scale-95 border border-indigo-100 z-10"
+                  >
+                    <Sparkles size={14} className="text-indigo-500 animate-spin-slow" />
+                    AI 繪本配圖
+                  </button>
+                </div>
+                
+                <span className="text-[11px] text-slate-400 text-center italic">
+                  * 默認展示精緻向量插畫，點擊「AI 繪本配圖」可動態生成逼真的童話世界。
+                </span>
+              </div>
+
+              {/* Right Part: Large Interactive Character display & Kid story (6 Cols) */}
+              <div className="lg:col-span-6 w-full flex flex-col justify-between h-full min-h-[300px] gap-6">
+                
+                {/* Sentence Ruby Reader */}
+                <div className="text-center py-6 px-4 bg-slate-50/60 rounded-2xl border border-slate-100/50 relative flex flex-wrap justify-center items-center gap-x-2 gap-y-6 min-h-[110px]">
+                  {charArray.map((char, index) => (
+                    <span key={index}>
+                      {renderRubyText(char, pinyins[index], jyutpings[index])}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Kid Story box */}
+                <div className="bg-amber-50/40 border border-amber-100/50 p-5 rounded-2xl relative">
+                  <span className="absolute -top-3 left-4 bg-amber-400 text-white font-bold text-xs px-2.5 py-0.5 rounded-full shadow-sm flex items-center gap-1">
+                    <Heart size={12} className="fill-white" />
+                    寶寶聽故事
+                  </span>
+                  
+                  <p className="text-slate-700 text-base md:text-lg font-medium leading-relaxed mt-1 text-justify">
+                    {activeSentence.story}
+                  </p>
+
+                  {/* Narration voice and star progress controls */}
+                  <div className="mt-5 flex items-center justify-between gap-4 border-t border-amber-100/50 pt-3">
+                    {/* Speak Button */}
+                    <button 
+                      onClick={handlePlayAudio}
+                      disabled={isPlayingAudio}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${
+                        isPlayingAudio 
+                          ? 'bg-emerald-100 text-emerald-800 scale-95' 
+                          : 'bg-emerald-500 text-white hover:bg-emerald-600 shadow-md active:scale-95'
+                      }`}
+                    >
+                      <Volume2 size={16} className={isPlayingAudio ? "animate-bounce" : ""} />
+                      {isPlayingAudio ? "正在講故事..." : "語音講故事"}
+                    </button>
+
+                    {/* Collect Star Badge button */}
+                    <button 
+                      onClick={() => toggleStar(activeStateKey)}
+                      className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold transition-all ${
+                        starsCollected[activeStateKey]
+                          ? 'bg-amber-400 text-white shadow-md shadow-amber-200'
+                          : 'bg-slate-100 text-slate-500 hover:bg-amber-50 hover:text-amber-500'
+                      }`}
+                    >
+                      <Star size={16} className={starsCollected[activeStateKey] ? "fill-white" : ""} />
+                      {starsCollected[activeStateKey] ? "已得星章！" : "學會了得星"}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Parent's guide (Literary Detail) */}
+                <div className="bg-slate-50 border border-slate-100 p-4 rounded-xl">
+                  <h4 className="text-xs font-bold text-indigo-800 tracking-wider uppercase mb-1 flex items-center gap-1">
+                    <span>💡 家長小百科 (品析與引導)</span>
+                  </h4>
+                  <p className="text-xs text-slate-600 leading-relaxed text-justify">
+                    {activeSentence.analysis}
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* Bottom Panel: Navigation Buttons */}
+            <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+              <button
+                onClick={handlePrevSentence}
+                disabled={currentPoemIndex === 0 && currentSentenceIndex === 0}
+                className="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-200 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+              >
+                <ChevronLeft size={18} />
+                上一句
+              </button>
+
+              <span className="text-xs font-semibold text-slate-500">
+                《{activePoem.title}》 第 {currentSentenceIndex + 1} / {activePoem.sentences.length} 句
+              </span>
+
+              <button
+                onClick={handleNextSentence}
+                disabled={currentPoemIndex === poemsData.length - 1 && currentSentenceIndex === activePoem.sentences.length - 1}
+                className="flex items-center gap-1 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-bold shadow-md active:scale-95 disabled:opacity-30 disabled:hover:bg-indigo-600 transition-all"
+              >
+                下一句
+                <ChevronRight size={18} />
+              </button>
+            </div>
+
+          </div>
+
+          {/* Literary Introduction for Parents */}
+          <div className="bg-white/90 backdrop-blur rounded-2xl border border-slate-100 p-5 md:p-6 shadow-sm">
+            <h3 className="text-lg font-black text-slate-800 mb-3 flex items-center gap-2">
+              <BookOpen size={20} className="text-indigo-600" />
+              此首古詩家長導讀與共讀技巧
+            </h3>
+            <p className="text-slate-600 text-sm leading-relaxed text-justify">
+              {activePoem.parentIntro}
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* Gamification: Awesome Certificate Pop-up */}
+      {showCertificate && (
+        <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm animate-fade-in">
+          
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 md:p-8 text-center relative shadow-2xl border border-amber-200 overflow-hidden transform scale-100 transition-all">
+            
+            {/* Playful Confetti Effect background */}
+            <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-red-400 via-amber-400 to-emerald-400" />
+            
+            {/* Close button */}
+            <button 
+              onClick={() => { setShowCertificate(false); setShowConfetti(false); }}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 hover:bg-slate-100 p-1.5 rounded-full transition-all"
+            >
+              ✕
+            </button>
+
+            {/* Content */}
+            <div className="flex justify-center mb-4 text-amber-500 animate-bounce">
+              <Award size={80} className="stroke-2 fill-amber-50" />
+            </div>
+
+            <h2 className="text-2xl md:text-3xl font-black text-amber-600 mb-1">恭喜優秀的小詩人！</h2>
+            <p className="text-sm text-slate-500 mb-6">您與寶寶已經共同完成了《{activePoem.title}》的學習並收集了所有的星章！</p>
+
+            <div className="bg-amber-50 rounded-2xl p-5 border border-amber-200/50 mb-6">
+              <div className="flex justify-center gap-1.5 mb-2">
+                {activePoem.sentences.map((_, i) => (
+                  <Star key={i} size={24} className="fill-amber-400 stroke-amber-500 animate-pulse" />
+                ))}
+              </div>
+              <p className="text-xs text-amber-800 font-bold">獲得「{activePoem.title}」滿星榮譽勳章</p>
+            </div>
+
+            <p className="text-xs text-slate-400 mb-6 leading-relaxed">
+              「小時不識月，呼作白玉盤。」古詩就像種在孩子心田的小小種子，現在的每一聲朗讀、每一次歡笑，都會在日後發芽出燦爛的花朵。
+            </p>
+
+            <button 
+              onClick={() => { setShowCertificate(false); setShowConfetti(false); }}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition-all transform active:scale-95"
+            >
+              太棒了，繼續探索新詩！
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Tailwind & Custom style injections for responsive rendering */}
+      <style>{`
+        .scrollbar-none::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-none {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        rt {
+          display: block;
+          user-select: none;
+          pointer-events: none;
+        }
+        ruby {
+          ruby-position: over;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        .animate-fade-in {
+          animation: fadeIn 0.3s ease-out forwards;
+        }
+        .animate-spin-slow {
+          animation: spin 6s linear infinite;
+        }
+      `}</style>
+
+    </div>
+  );
+}
